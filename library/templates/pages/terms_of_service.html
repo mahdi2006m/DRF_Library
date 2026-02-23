@@ -1,0 +1,186 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Terms of Service & User Agreement{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/css/terms_of_service.css' %}">
+<!--<link rel="stylesheet" href="{% static 'bases/css/pagination.css' %}">-->
+{% endblock %}
+{% block content %}
+<div class="container">
+    <!-- Sticky Sidebar Navigation -->
+    <aside class="sidebar">
+        <h3 class="sidebar-title">
+            <i class="material-icons">list</i>
+            Table of Contents
+        </h3>
+        <ul class="toc-list">
+            <li class="toc-item"><a href="#intro">1. Acceptance of Terms</a></li>
+            <li class="toc-item"><a href="#membership">2. Membership Eligibility</a></li>
+            <li class="toc-item"><a href="#borrowing">3. Borrowing & Usage</a></li>
+            <li class="toc-item"><a href="#fines">4. Fines & Penalties</a></li>
+            <li class="toc-item"><a href="#digital">5. Digital Resources</a></li>
+            <li class="toc-item"><a href="#conduct">6. User Conduct</a></li>
+            <li class="toc-item"><a href="#termination">7. Account Termination</a></li>
+            <li class="toc-item"><a href="#contact">8. Contact Us</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Terms of Service & User Agreement</h1>
+            <div class="last-updated">
+                <i class="material-icons">update</i>
+                Last Updated: February 15, 2026
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <p>Welcome to the <strong>City Digital Library</strong>. By accessing our website, registering for a library card, or using our services, you agree to comply with and be bound by the following Terms of Service.</p>
+        </div>
+
+        <section id="intro" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Acceptance of Terms
+            </h2>
+            <div class="section-content">
+                <p>
+                    Your use of this site is subject to these Terms, our Privacy Policy, and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using this site. Materials contained in this website are protected by copyright and trademark laws.
+                </p>
+                <p>
+                    These Terms constitute a legally binding agreement between you and City Digital Library ("we", "us", "our"). By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms.
+                </p>
+            </div>
+        </section>
+
+        <section id="membership" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Membership Eligibility
+            </h2>
+            <div class="section-content">
+                <p>Membership is available to all residents aged 18 and above. Users under the age of 18 must have parental or guardian consent to register.</p>
+                <ul>
+                    <li>You must provide accurate, current, and complete information during registration.</li>
+                    <li>Members are responsible for maintaining the confidentiality of their account credentials.</li>
+                    <li>You are liable for all activities that occur under your account.</li>
+                    <li>Loss of a library card must be reported immediately; the member is responsible for all loans made on the card until loss is reported.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="borrowing" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Borrowing and Usage Rules
+            </h2>
+            <div class="section-content">
+                <p>We have established the following rules for borrowing and using our library resources:</p>
+
+                <h3 class="subsection-title">Physical Books</h3>
+                <ul>
+                    <li>Standard loan period is 14 days, renewable up to 3 times if no other user has reserved the item.</li>
+                    <li>Members may borrow up to 5 physical items at a time.</li>
+                    <li>Users must ensure books are returned in the condition they were borrowed. Any damage may incur fees.</li>
+                </ul>
+
+                <h3 class="subsection-title">Digital Resources</h3>
+                <ul>
+                    <li>Access to e-books, audiobooks, and databases is limited to personal use.</li>
+                    <li>Sharing download credentials or files with non-members is strictly prohibited.</li>
+                    <li>Digital items have an expiration date defined by the publisher and cannot be returned early via the app.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="fines" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Fines and Penalties
+            </h2>
+            <div class="alert-box">
+                <p><strong>Important:</strong> Outstanding fines or lost items may result in suspension of borrowing privileges.</p>
+            </div>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Late Fees:</strong> A fee of $0.25 per day per item is charged for overdue physical books.</li>
+                    <li><strong>Lost Items:</strong> If an item is lost or damaged beyond repair, the user must pay the full replacement cost plus a $5 processing fee.</li>
+                    <li><strong>Non-payment:</strong> Accounts with unpaid fines exceeding $25 will be blocked and referred to a collection agency if unresolved after 90 days.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="digital" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Digital Resources and Copyright
+            </h2>
+            <div class="section-content">
+                <p>
+                    All content available on this platform, including text, graphics, logos, and software, is the property of City Digital Library or its content suppliers and is protected by international copyright laws.
+                </p>
+                <p>You may not:</p>
+                <ul>
+                    <li>Modify, copy, distribute, transmit, display, perform, publish, license, create derivative works from, transfer, or sell any information obtained from this site.</li>
+                    <li>Bypass, remove, or disable any DRM (Digital Rights Management) technology.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="conduct" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                User Conduct
+            </h2>
+            <div class="section-content">
+                <p>While using our services, you agree NOT to:</p>
+                <ul>
+                    <li>Use the library network for illegal activities, hacking, or harassment.</li>
+                    <li>Upload viruses or malicious code to the site.</li>
+                    <li>Disturb other patrons in physical or digital spaces.</li>
+                    <li>Attempt to gain unauthorized access to the library's servers or accounts.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="termination" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">7</span>
+                Account Termination
+            </h2>
+            <div class="section-content">
+                <p>
+                    The City Digital Library reserves the right to suspend or terminate your account and access to Service at any time, without prior notice or liability, for any reason, including but not limited to:
+                </p>
+                <ul>
+                    <li>Breach of these Terms.</li>
+                    <li>Non-payment of fines or fees.</li>
+                    <li>Conduct that harms the library, staff, or other users.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact" class="policy-section">
+            <h2 class="section-title">
+                <span class="section-number">8</span>
+                Contact Us
+            </h2>
+            <div class="section-content">
+                <p>
+                    If you have any questions, concerns, or suggestions regarding our Terms of Service, please contact our administration office:
+                </p>
+                <ul class="contact-list">
+                    <li>Email: <a href="mailto:admin@citylibrary.ir">admin@citylibrary.ir</a></li>
+                    <li>Support Phone: +98 21 1234 5678</li>
+                    <li>Address: Enghelab Ave, National Library Center, Tehran, Iran</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="back-to-top">
+            <a href="#">Back to Top ▲</a>
+        </div>
+    </main>
+</div>
+{% endblock %}

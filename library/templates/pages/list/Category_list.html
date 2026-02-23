@@ -1,0 +1,57 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Library Home{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'pages/list/css/category.css' %}">
+    <link rel="stylesheet" href="{% static 'bases/css/pagination.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="main-content">
+        <div class="section-header">
+            <h1 class="page-title">Categories</h1>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                Back
+            </a>
+        </div>
+
+        <div class="categories-grid">
+            {% for category in categories %}
+                <div class="category-card">
+                    <div class="category-header">
+                        <a href="{% url 'category_detail' category.slug %}">
+                            {% if category.logo_image %}
+                                <img src="{{ category.logo_image.url }}" class="category-logo">
+                                <div class="category-logo-overlay"></div>
+                            {% else %}
+                                <div class="category-logo-placeholder">
+                                    <i class="material-icons">category</i>
+                                </div>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="category-details">
+                        <a href="{% url 'category_detail' category.slug %}"
+                           class="category-name">{{ category.name }}</a>
+                        <div class="category-books-count">
+                            <i class="material-icons">menu_book</i>
+                            <span>{{ category.books.count }} book{{ category.books.count|pluralize }}</span>
+                        </div>
+                        <a href="{% url 'category_detail' category.slug %}" class="category-link">
+                            <i class="material-icons">arrow_forward</i>
+                            View More
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-secondary);">
+                    <i class="material-icons" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">category</i>
+                    <p>No categories available at the moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include "bases/pagination.html" with page=page_obj %}
+
+{% endblock %}

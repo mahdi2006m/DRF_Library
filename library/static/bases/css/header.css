@@ -1,0 +1,389 @@
+/* Header CSS */
+@import url('variables.css');
+
+.site-header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.brand-logo a{
+    color: var(--accent-color);
+}
+.brand-logo a:hover {
+    color: var(--text-color);
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    position: relative;
+    transition: width var(--transition);
+
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--accent-color);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width var(--transition);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.search-wrapper {
+    position: relative;
+    margin-left: 1rem;
+}
+
+.search-input {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    border-radius: 20px;
+    font-family: inherit;
+    color: var(--text-color);
+    width: 240px;
+    transition: all var(--transition);
+}
+
+.search-input:focus {
+    width: 300px;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 85, 255, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    width: 40px;
+    height: 40px;
+}
+
+.icon-btn:hover {
+    background: var(--bg-color);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+@media (max-width: 1024px) {
+    .site-header {
+        padding: 0 1.5rem;
+    }
+    
+    .nav-menu {
+        gap: 1.5rem;
+    }
+    
+    .search-input {
+        width: 200px;
+    }
+    
+    .search-input:focus {
+        width: 250px;
+    }
+}
+
+@media (max-width: 900px) {
+    .site-header {
+        padding: 0 1rem;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        width: 100%;
+        background-color: var(--surface-color);
+        flex-direction: column;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        transform: translateY(-150%);
+        transition: transform var(--transition);
+        z-index: 99;
+        box-shadow: var(--shadow-md);
+        gap: 1.5rem;
+    }
+
+    .nav-menu.open {
+        transform: translateY(0);
+    }
+
+    .nav-menu .search-wrapper {
+        width: 100%;
+        margin: 0;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+    }
+
+    .search-input:focus {
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .controls {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header {
+        padding: 0 0.75rem;
+        height: 60px;
+    }
+    
+    .brand-logo {
+        font-size: 1.25rem;
+    }
+    
+    .controls {
+        gap: 0.5rem;
+    }
+    
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0.4rem;
+    }
+    
+    .profile-pic {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    
+    .profile-menu span {
+        display: none;
+    }
+    
+    .btn-login {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .nav-menu {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        padding: 0 0.5rem;
+        height: 56px;
+    }
+    
+    .brand-logo {
+        font-size: 1.1rem;
+    }
+    
+    .mobile-menu-btn {
+        font-size: 1.25rem;
+    }
+    
+    .controls {
+        gap: 0.25rem;
+    }
+    
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+        padding: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    .profile-pic {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-login {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        text-transform: none;
+    }
+    
+    .profile-dropdown {
+        width: 140px;
+        right: -10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .brand-logo {
+        font-size: 1rem;
+    }
+    
+    .mobile-menu-btn {
+        font-size: 1.1rem;
+    }
+    
+    .icon-btn {
+        width: 28px;
+        height: 28px;
+        padding: 0.25rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Profile Menu */
+.profile-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+}
+
+.profile-menu span {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.profile-menu button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.profile-menu button:hover {
+    color: var(--accent-color);
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--surface-color);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--card-radius);
+    width: 160px;
+    margin-top: 0.5rem;
+}
+
+.profile-menu.open .profile-dropdown {
+    display: block;
+}
+
+.profile-dropdown a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.profile-dropdown a:hover {
+    background-color: var(--surface-color-light);
+    color: var(--accent-color);
+}
+
+/* Login Button */
+.btn-login {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}

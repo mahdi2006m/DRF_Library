@@ -1,0 +1,97 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}{{ publisher.name }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/detail/css/publisher_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <main class="main-content">
+        <div class="section-header">
+            <h1 class="page-title">Publisher Details</h1>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                Back
+            </a>
+        </div>
+
+        <div class="publisher-profile">
+            <div class="publisher-logo">
+                <div class="publisher-logo-image">
+                    {% if publisher.logo_image %}
+                        <img src="{{ publisher.logo_image.url }}" alt="{{ publisher.name }}">
+                    {% else %}
+                        <i class="material-icons" style="font-size: 5rem; color: var(--accent-color);">business</i>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="publisher-info">
+                <h1 class="publisher-name">{{ publisher.name }}</h1>
+
+                <div class="publisher-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="material-icons">language</i>
+                            Website
+                        </div>
+                        <div class="detail-value">
+                            {% if publisher.website %}
+                                <a href="{{ publisher.website }}" target="_blank" rel="noopener noreferrer">{{ publisher.website }}</a>
+                            {% else %}
+                                <span style="color: var(--text-secondary);">Not available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="material-icons">info</i>
+                            Description
+                        </div>
+                        <div class="detail-value">
+                            {% if publisher.address %}
+                                {{ publisher.address }}
+                            {% else %}
+                                <span style="color: var(--text-secondary);">Not available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">
+            <i class="material-icons">menu_book</i>
+            Books by {{ publisher.name }}
+        </h2>
+
+        <div class="books-grid">
+            {% for book in publisher.books.all %}
+            <div class="book-card">
+                <div class="book-cover-container">
+                    <a href="{% url 'book_detail' book.id %}" style="display: block; height: 100%;">
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
+                        {% else %}
+                            <div class="no-cover">No Cover Available</div>
+                        {% endif %}
+                        <div class="book-cover-overlay"></div>
+                    </a>
+                </div>
+
+                <div class="book-details">
+                    <a href="{% url 'book_detail' book.id %}" class="book-title">{{ book.title }}</a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-secondary);">
+                <i class="material-icons" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">menu_book</i>
+                <p>No books available for this publisher at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}

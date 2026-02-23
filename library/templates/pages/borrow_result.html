@@ -1,0 +1,27 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Borrow Result{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/css/borrow_result.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <main class="main-content">
+        <div class="result-card">
+            <div class="result-icon">
+                <i class="material-icons">info</i>
+            </div>
+            <h1 class="result-title">Result of operation</h1>
+            <p class="result-message">{{ messages }}</p>
+
+            <div class="result-actions">
+                <a href="javascript:history.back()" class="btn btn-primary">
+                    <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                    Back
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

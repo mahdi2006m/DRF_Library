@@ -1,0 +1,65 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Publishers{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'pages/list/css/publisher_list.css' %}">
+    <link rel="stylesheet" href="{% static 'bases/css/pagination.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <main class="main-content">
+            <div class="section-header">
+                <h1 class="page-title">Publishers</h1>
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                    Back
+                </a>
+            </div>
+
+            <div class="publishers-grid">
+                {% for publisher in publishers %}
+                    <div class="publisher-card">
+                        <div class="publisher-header">
+                            <div class="publisher-logo">
+                                {% if publisher.logo_image %}
+                                    <img src="{{ publisher.logo_image.url }}" alt="{{ publisher.name }}">
+                                {% else %}
+                                    <i class="material-icons"
+                                       style="font-size: 2rem; color: var(--accent-color);">business</i>
+                                {% endif %}
+                            </div>
+                            <div class="publisher-name">
+                                <a href="{% url 'publisher_detail' publisher.id %}">{{ publisher.name }}</a>
+                            </div>
+                        </div>
+
+                        <div class="publisher-details">
+                            <div class="publisher-books-count">
+                                <i class="material-icons">menu_book</i>
+                                <span>{{ publisher.books.count }} book{{ publisher.books.count|pluralize }}</span>
+                            </div>
+
+                            {% if publisher.address %}
+                                <p class="publisher-description">{{ publisher.address }}</p>
+                            {% endif %}
+
+                            <a href="{% url 'publisher_detail' publisher.id %}" class="publisher-link">
+                                <i class="material-icons">arrow_forward</i>
+                                View Books
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-secondary);">
+                        <i class="material-icons"
+                           style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">business</i>
+                        <p>No publishers available at the moment.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </main>
+    </div>
+    {% include "bases/pagination.html" with page=page_obj %}
+{% endblock %}
+

@@ -1,0 +1,153 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}{{ member.user.username }} profile{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'pages/detail/css/member_profile.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="main-content">
+        <div class="page-title">My Profile</div>
+
+        <div class="profile-header">
+            <div class="profile-image-container">
+                {% if member.profile_image %}
+                    <img src="{{ member.profile_image.url }}" alt="{{ member.user.first_name }} {{ member.user.last_name }}" class="profile-image">
+                {% else %}
+                    <div class="no-cover">
+                        <i class="material-icons">person</i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="profile-info">
+                <h1 class="user-name">{{ member.user.first_name }} {{ member.user.last_name }}</h1>
+                <div class="user-role">
+                    <i class="material-icons">badge</i>
+                    {{ member.role|default:"Member" }}
+                </div>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">person</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">person</i>
+                        <span>Username</span>
+                    </div>
+                    <div class="info-value">{{ member.user.username }}</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">email</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">email</i>
+                        <span>Email</span>
+                    </div>
+                    <div class="info-value">
+                        <a href="mailto:{{ member.user.email }}" title="Send email to {{ member.user.email }}">{{ member.user.email }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">badge</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">badge</i>
+                        <span>Membership Number</span>
+                    </div>
+                    <div class="info-value">{{ member.membership_number }}</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">phone</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">phone</i>
+                        <span>Phone</span>
+                    </div>
+                    <div class="info-value">
+                        <a href="tel:{{ member.phone }}" title="Call {{ member.phone }}">{{ member.phone }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">person</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">person</i>
+                        <span>Role</span>
+                    </div>
+                    <div class="info-value">{{ member.role|default:"Member" }}</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">calendar_today</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">calendar_today</i>
+                        <span>Member Since</span>
+                    </div>
+                    <div class="info-value">{{ member.membership_date|date:"F d, Y" }}</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">menu_book</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">menu_book</i>
+                        <span>Max Books</span>
+                    </div>
+                    <div class="info-value">{{ member.max_books_allowed }}</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="material-icons">location_on</i>
+                </div>
+                <div>
+                    <div class="info-label">
+                        <i class="material-icons">location_on</i>
+                        <span>Address</span>
+                    </div>
+                    <div class="info-value">{{ member.address }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'change_password' %}" class="btn btn-primary">
+                <i class="material-icons">lock</i>
+                Change Password
+            </a>
+        </div>
+    </main>
+</div>
+
+
+{% endblock %}
+

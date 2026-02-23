@@ -1,0 +1,66 @@
+<header class="site-header">
+    <div class="brand-logo">
+        <a href="{% url 'home' %}">Library</a>
+    </div>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+        <i class="material-icons">menu</i>
+    </button>
+
+    <nav class="nav-menu" id="navMenu">
+        {% if perms.library.add_book or perms.library.can_add_book %}
+        	<a href="{% url 'add_book' %}" class="nav-link">Add New Book</a>
+        {% endif %}
+        <a href="{% url 'member_history' %}" class="nav-link">Deposit History</a>
+        <a href="{% url 'author_list' %}" class="nav-link">Authors</a>
+        <a href="{% url 'publisher_list' %}" class="nav-link">Publishers</a>
+        <a href="{% url 'category_list' %}" class="nav-link">Categories</a>
+
+        <form action="{% url 'search' %}" id="search-form" method="get">
+            {% csrf_token %}
+            <div class="search-wrapper">
+                <i class="material-icons search-icon">search</i>
+                <input type="text" class="search-input" placeholder="Search books, authors..." name="search-query">
+                <button type="submit" id="btn-search" style="display: none;">search</button>
+            </div>
+        </form>
+    </nav>
+
+    <div class="controls">
+        <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <i class="material-icons" id="themeIcon">contrast</i>
+        </button>
+
+        {% if user.is_authenticated %}
+            <div class="profile-menu">
+                <!-- Profile picture (you can replace this with an actual image) -->
+                <div class="profile-pic">{{ user.username|slice:":1" }}</div> <!-- First letter of the user's name -->
+                <span>{{ user.username }}</span>
+                <button onclick="document.querySelector('.profile-menu').classList.toggle('open')">
+                    <i class="material-icons">arrow_drop_down</i>
+                </button>
+
+                <div class="profile-dropdown">
+                    <a href="{% url 'profile' %}">Profile</a>
+                    <form action="{% url 'logout' %}?next={{ request.get_full_path }}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary" style="    width: 100%;
+    border-radius: unset;
+    justify-content: left;
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+}">Logout
+                        </button>
+                    </form>
+                    {#                    <a href="{% url 'logout' %}">Logout</a>#}
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="btn btn-login">Login</a>
+            <a href="{% url 'register' %}?next={{ request.get_full_path }}" class="btn btn-login">Register</a>
+        {% endif %}
+    </div>
+</header>

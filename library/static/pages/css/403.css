@@ -1,0 +1,95 @@
+/* 404 Error Page CSS */
+@import url('../../bases/css/variables.css');
+
+.main-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.error-container {
+    max-width: 600px;
+    text-align: center;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    line-height: 1;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.error-code::after {
+    content: '404';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.05;
+    font-size: 10rem;
+    z-index: -1;
+}
+
+.error-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.error-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+}
+
+.error-illustration {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.helpful-links {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.helpful-links p {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .error-code {
+        font-size: 6rem;
+    }
+
+    .error-title {
+        font-size: 1.75rem;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .error-illustration {
+        width: 150px;
+        height: 150px;
+    }
+}

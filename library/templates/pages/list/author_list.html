@@ -1,0 +1,73 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Authors{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/list/css/author_list.css' %}">
+<link rel="stylesheet" href="{% static 'bases/css/pagination.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="main-content">
+        <div class="section-header">
+            <h1 class="page-title">Authors</h1>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                Back
+            </a>
+        </div>
+
+        <div class="authors-grid">
+            {% for author in authors %}
+            <div class="author-card">
+                <div class="author-header">
+                    <a href="{% url 'author_detail' author.id %}">
+
+                        <div class="author-avatar">
+                            {% if author.profile_image %}
+                            <img src="{{ author.profile_image.url }}" alt="{{ author }}">
+                            {% else %}
+                            <div class="author-avatar-placeholder">
+                                {{ author|slice:":1"|default:"A" }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="author-name">
+                        <a href="{% url 'author_detail' author.id %}">{{ author }}</a>
+                        <div class="author-books-count">
+                            <i class="material-icons">menu_book</i>
+                            <span>{{ author.book_set.count }} book{{ author.book_set.count|pluralize }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="author-details">
+                    <p class="author-bio">
+                        {% if author.bio %}
+                        {{ author.bio }}
+                        {% else %}
+                        No biography available for this author.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'author_detail' author.id %}" class="author-link">
+                        <i class="material-icons">arrow_forward</i>
+                        View Profile
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-secondary);">
+                <i class="material-icons" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">person_search</i>
+                <p>No authors available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block pagination %}
+{% include "bases/pagination.html" with page=page_obj %}
+{% endblock %}
+
+

@@ -1,0 +1,237 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}History of deposits and reservations{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/css/member_history.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="main-content">
+        <div class="section-header">
+            <h1 class="page-title">History of deposits and reservations</h1>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                Back
+            </a>
+        </div>
+
+        <div class="history-container">
+            <div class="history-section">
+                <div class="section-header-card">
+                    <h2 class="section-title">
+                        <i class="material-icons">menu_book</i>
+                        Borrowed books
+                    </h2>
+                    <!-- Borrowed books count -->
+                    <span class="section-count">{{ borrows.paginator.count }}</span></div>
+                <div class="history-grid" id="borrows-grid">
+                    {% for b in borrows %}
+                    <div class="history-card">
+                        <div class="book-cover-medium">
+                            <a href="{% url 'book_detail' b.book.id %}" style="display: block; height: 100%;">
+
+                                {% if b.book.cover_image %}
+                                <img src="{{ b.book.cover_image.url }}" alt="{{ b.book.title }}">
+                                {% else %}
+                                <div style="width: 100%; height: 100%; background-color: var(--border-color); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 0.875rem; text-align: center; padding: 0.5rem;">
+                                    No Cover
+                                </div>
+                                {% endif %}
+                            </a>
+                        </div>
+
+                        <div class="book-info">
+                            <div class="book-details">
+                                <div class="book-status">
+                                    <span class="status-badge {% if b.status == 'returned' %}status-returned{% elif b.status == 'borrowed' %}status-borrowed{% elif b.status == 'overdue' %}status-overdue{% else %}status-returned{% endif %}">
+                                        <i class="material-icons" style="font-size: 0.875rem;">
+                                            {% if b.status == 'returned' %}check_circle{% elif b.status == 'borrowed' %}schedule{% elif b.status == 'overdue' %}warning{% else %}check_circle{% endif %}
+                                        </i>
+                                        {{ b.status|title }}
+                                    </span>
+                                </div>
+
+                                {% if b.return_date %}
+                                <div class="return-date">
+                                    <i class="material-icons" style="font-size: 1rem;">event</i>
+                                    <span>Return date: {{ b.return_date|date:"M d, Y" }}</span>
+                                </div>
+                                {% endif %}
+
+                                <div class="return-date">
+                                    <i class="material-icons" style="font-size: 1rem;">calendar_today</i>
+                                    <span>Borrowed: {{ b.borrow_date|date:"M d, Y" }}</span>
+                                </div>
+
+                                {% if b.due_date %}
+                                <div class="return-date">
+                                    <i class="material-icons" style="font-size: 1rem;">event</i>
+                                    <span>Due date: {{ b.due_date|date:"M d, Y" }}</span>
+                                </div>
+                                {% endif %}
+
+                            </div>
+
+                            <a href="{% url 'book_detail' b.book.id %}" class="book-title">{{ b.book.title }}</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="material-icons">menu_book</i>
+                        <p>You don't have any books on loan</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination for Borrows -->
+                <!-- Pagination for Borrows -->
+                <div class="pagination-container" id="borrows-pagination">
+                    {% if borrows.has_previous %}
+                    <a href="?borrow_page=1{% if request.GET.reservation_page %}&reservation_page={{ request.GET.reservation_page }}{% endif %}"
+                       class="pagination-btn" title="First page">
+                        <i class="material-icons">first_page</i>
+                    </a>
+
+                    <a href="?borrow_page={{ borrows.previous_page_number }}{% if request.GET.reservation_page %}&reservation_page={{ request.GET.reservation_page }}{% endif %}"
+                       class="pagination-btn">
+                        <i class="material-icons">chevron_left</i>
+                    </a>
+                    {% else %}
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">first_page</i>
+                    </button>
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">chevron_left</i>
+                    </button>
+                    {% endif %}
+
+                    <!-- Page numbers -->
+                    <button class="pagination-btn pagination-current">{{borrows.number }}</button>
+
+                    {% if borrows.has_next %}
+                    <a href="?borrow_page={{ borrows.next_page_number }}{% if request.GET.reservation_page %}&reservation_page={{ request.GET.reservation_page }}{% endif %}"
+                       class="pagination-btn">
+                        <i class="material-icons">chevron_right</i>
+                    </a>
+
+                    <a href="?borrow_page={{ borrows.paginator.num_pages }}{% if request.GET.reservation_page %}&reservation_page={{ request.GET.reservation_page }}{% endif %}"
+                       class="pagination-btn" title="Last page">
+                        <i class="material-icons">last_page</i>
+                    </a>
+                    {% else %}
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">chevron_right</i>
+                    </button>
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">last_page</i>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="history-section">
+                <div class="section-header-card">
+                    <h2 class="section-title">
+                        <i class="material-icons">bookmark</i>
+                        Reservations
+                    </h2>
+                    <span class="section-count">{{ reservations.paginator.count }}</span></div>
+                <div class="history-grid" id="reservations-grid">
+                    {% for r in reservations %}
+                    <div class="history-card">
+                        <div class="book-cover-medium">
+                            <a href="{% url 'book_detail' r.book.id %}" style="display: block; height: 100%;">
+                                {% if r.book.cover_image %}
+                                <img src="{{ r.book.cover_image.url }}" alt="{{ r.book.title }}">
+                                {% else %}
+                                <div style="width: 100%; height: 100%; background-color: var(--border-color); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 0.875rem; text-align: center; padding: 0.5rem;">
+                                    No Cover
+                                </div>
+                                {% endif %}
+                            </a>
+                        </div>
+
+                        <div class="book-info">
+                            <a href="{% url 'book_detail' r.book.id %}" class="book-title">{{ r.book.title }}</a>
+
+                            <div class="book-details">
+                                <div class="book-status">
+                                    <span class="status-badge {% if r.status == 'active' %}status-reserved{% elif r.status == 'fulfilled' %}status-returned{% elif r.status == 'cancelled' %}status-cancelled{% else %}status-reserved{% endif %}">
+                                        <i class="material-icons" style="font-size: 0.875rem;">
+                                            {% if r.status == 'active' %}bookmark{% elif r.status == 'fulfilled' %}check_circle{% elif r.status == 'cancelled' %}cancel{% else %}bookmark{% endif %}
+                                        </i>
+                                        {{ r.status|title }}
+                                    </span>
+                                </div>
+
+                                {% if r.reserved_at %}
+                                <div class="return-date">
+                                    <i class="material-icons" style="font-size: 1rem;">event</i>
+                                    <span>Reserved on: {{ r.reserved_at|date:"M d, Y" }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="material-icons">bookmark</i>
+                        <p>You have no reserved books</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <!-- Pagination for Reservations -->
+                <div class="pagination-container" id="reservations-pagination">
+                    {% if reservations.has_previous %}
+                    <a href="?reservation_page=1{% if request.GET.borrow_page %}&borrow_page={{ request.GET.borrow_page }}{% endif %}"
+                       class="pagination-btn" title="First page">
+                        <i class="material-icons">first_page</i>
+                    </a>
+
+                    <a href="?reservation_page={{ reservations.previous_page_number }}{% if request.GET.borrow_page %}&borrow_page={{ request.GET.borrow_page }}{% endif %}"
+                       class="pagination-btn">
+                        <i class="material-icons">chevron_left</i>
+                    </a>
+                    {% else %}
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">first_page</i>
+                    </button>
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">chevron_left</i>
+                    </button>
+                    {% endif %}
+
+                    <!-- Page numbers -->
+                    <button class="pagination-btn pagination-current">{{ reservations.number }}</button>
+
+
+                    {% if reservations.has_next %}
+                    <a href="?reservation_page={{ reservations.next_page_number }}{% if request.GET.borrow_page %}&borrow_page={{ request.GET.borrow_page }}{% endif %}"
+                       class="pagination-btn">
+                        <i class="material-icons">chevron_right</i>
+                    </a>
+
+                    <a href="?reservation_page={{ reservations.paginator.num_pages }}{% if request.GET.borrow_page %}&borrow_page={{ request.GET.borrow_page }}{% endif %}"
+                       class="pagination-btn" title="Last page">
+                        <i class="material-icons">last_page</i>
+                    </a>
+                    {% else %}
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">chevron_right</i>
+                    </button>
+                    <button class="pagination-btn" disabled>
+                        <i class="material-icons">last_page</i>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'pages/js/member_history.js' %} "></script>
+{% endblock %}

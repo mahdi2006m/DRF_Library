@@ -1,0 +1,48 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Login Required{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auth/css/auth.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="main-content">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="material-icons">lock</i>
+                    </div>
+                    <h1 class="auth-title">Login Required</h1>
+                    <p class="auth-subtitle">Must be logged in to access this page.</p>
+                </div>
+
+                <div class="auth-body">
+                    <div class="message-content">
+                        <p class="message-text">
+                            You need to be logged in to access this page. Please sign in to your account or create a new one if you don't have an account yet.
+                        </p>
+                    </div>
+
+                    <div class="auth-actions">
+                        <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="btn btn-primary btn-full">
+                            <i class="material-icons" style="margin-right: 0.5rem;">login</i>
+                            Log In
+                        </a>
+                        
+                        <a href="{% url 'register' %}?next={{ request.get_full_path }}" class="btn btn-secondary btn-full">
+                            <i class="material-icons" style="margin-right: 0.5rem;">person_add</i>
+                            Create Account
+                        </a>
+                        
+                        <a href="javascript:history.back()" class="btn btn-outline btn-full btn-secondary">
+                            <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                            Go Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

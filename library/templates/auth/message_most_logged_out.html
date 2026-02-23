@@ -1,0 +1,51 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Access Denied{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auth/css/auth.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="main-content">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="material-icons">logout</i>
+                    </div>
+                    <h1 class="auth-title">Access Denied</h1>
+                    <p class="auth-subtitle">You are logged in.<br>Must be logged out to access this page.</p>
+                </div>
+
+                <div class="auth-body">
+                    <div class="message-content">
+                        <p class="message-text">
+                            This page requires you to be logged out. You are currently logged in.
+                            Please log out from your account to access this page.
+                            If you want login with another account you must first logout than this account.
+                            Go back and Logout.
+                        </p>
+                    </div>
+
+                    <div class="auth-actions">
+{#                        <a href="{% url 'logout' %}" class="btn btn-primary btn-full">#}
+{#                            <i class="material-icons" style="margin-right: 0.5rem;">logout</i>#}
+{#                            Log Out#}
+{#                        </a>#}
+
+                        <a href="{% url 'home' %}" class="btn btn-outline btn-full btn-secondary">
+                            <i class="material-icons" style="margin-right: 0.5rem;">home</i>
+                            Go to Home
+                        </a>
+
+                        <a href="javascript:history.back()" class="btn btn-outline btn-full btn-secondary">
+                            <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                            Go Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

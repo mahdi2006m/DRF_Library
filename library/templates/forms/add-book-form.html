@@ -1,0 +1,262 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Book Registration Form{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'forms/css/add-book-form.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <main class="main-content">
+            <div class="section-header">
+                <h1 class="page-title">Register New Book</h1>
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                    Back
+                </a>
+            </div>
+
+            <div class="form-container">
+                <h2 class="form-title">
+                    <i class="material-icons">menu_book</i>
+                    Book Registration Form
+                </h2>
+                <p class="form-description">Fill in the details below to add a new book to the library.</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="non-field-errors">
+                            <i class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">error</i>
+                            {{ form.non_field_errors|join:", " }}
+                        </div>
+                    {% endif %}
+
+                    <div class="form-row">
+                        <label for="id_title" class="form-label">Book Title</label>
+                        <input type="text" id="id_title" name="title"
+                               class="form-control {% if form.title.errors %}error{% endif %}"
+                               value="{{ form.title.value|default:'' }}" required>
+                        {% if form.title.errors %}
+                            <div class="form-error">
+                                <i class="material-icons" style="font-size: 1rem;">error</i>
+                                {{ form.title.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Author(s)</label>
+                        <div class="checkbox-group">
+                            {% for author in authors %}
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="id_author_{{ author.id }}" name="author"
+                                           value="{{ author.id }}"
+                                           {% if author.id in form.author.value %}checked{% endif %}>
+                                    <label for="id_author_{{ author.id }}">{{ author }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.author.errors %}
+                            <div class="form-error">
+                                <i class="material-icons" style="font-size: 1rem;">error</i>
+                                {{ form.author.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label for="id_publisher" class="form-label">Publisher</label>
+                            <select id="id_publisher" name="publisher"
+                                    class="form-control {% if form.publisher.errors %}error{% endif %}" required>
+                                <option value="">Select Publisher</option>
+                                {% for publisher in publishers %}
+                                    <option value="{{ publisher.id }}"
+                                            {% if publisher.id == form.publisher.value %}selected{% endif %}>{{ publisher.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            {% if form.publisher.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.publisher.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-row">
+                            <label for="id_category" class="form-label">Category</label>
+                            <select id="id_category" name="category"
+                                    class="form-control {% if form.category.errors %}error{% endif %}" required>
+                                <option value="">Select Category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}"
+                                            {% if category.id == form.category.value %}selected{% endif %}>{{ category.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            {% if form.category.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.category.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label for="id_isbn" class="form-label">ISBN</label>
+                            <input type="text" id="id_isbn" name="isbn"
+                                   class="form-control {% if form.isbn.errors %}error{% endif %}"
+                                   value="{{ form.isbn.value|default:'' }}" required maxlength="20" minlength="10">
+                            {% if form.isbn.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.isbn.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-row">
+                            <label for="id_publication_year" class="form-label">Publication Year</label>
+                            <input type="number" id="id_publication_year" name="publication_year"
+                                   class="form-control {% if form.publication_year.errors %}error{% endif %}"
+                                   value="{{ form.publication_year.value|default:'' }}" required>
+                            {% if form.publication_year.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.publication_year.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label for="id_total_copies" class="form-label">Total Copies</label>
+                            <input type="number" id="id_total_copies" name="total_copies"
+                                   class="form-control {% if form.total_copies.errors %}error{% endif %}"
+                                   value="{{ form.total_copies.value|default:'' }}" required>
+                            {% if form.total_copies.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.total_copies.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-row">
+                            <label for="id_available_copies" class="form-label">Available Copies</label>
+                            <input type="number" id="id_available_copies" name="available_copies"
+                                   class="form-control {% if form.available_copies.errors %}error{% endif %}"
+                                   value="{{ form.available_copies.value|default:'' }}" required>
+                            {% if form.available_copies.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.available_copies.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label for="id_status" class="form-label">Status</label>
+                            <select id="id_status" name="status"
+                                    class="form-control {% if form.status.errors %}error{% endif %}" required>
+                                <option value="available" {% if form.status.value == 'available' %}selected{% endif %}>
+                                    Available
+                                </option>
+                                <option value="reserved" {% if form.status.value == 'reserved' %}selected{% endif %}>
+                                    Reserved
+                                </option>
+                                <option value="borrowed" {% if form.status.value == 'borrowed' %}selected{% endif %}>
+                                    Borrowed
+                                </option>
+                                <option value="borrowed" {% if form.status.value == 'lost' %}selected{% endif %}>Lost
+                                </option>
+                            </select>
+                            {% if form.status.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.status.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-row">
+                            <label for="id_pages" class="form-label">Number of Pages</label>
+                            <input type="number" id="id_pages" name="pages"
+                                   class="form-control {% if form.pages.errors %}error{% endif %}"
+                                   value="{{ form.pages.value|default:'' }}">
+                            {% if form.pages.errors %}
+                                <div class="form-error">
+                                    <i class="material-icons" style="font-size: 1rem;">error</i>
+                                    {{ form.pages.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <label for="id_tag" class="form-label">Tags</label>
+                        <input type="text" id="id_tag" name="tags"
+                               class="form-control {% if tag.errors %}error{% endif %}"
+                               value="{{ tag|default:"" }}" required>
+                        {% if tag.errors %}
+                            <div class="form-error">
+                                <i class="material-icons" style="font-size: 1rem;">error</i>
+                                {{ tag|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-row">
+                        <label for="id_cover_image" class="form-label">Cover Image</label>
+                        <div class="file-upload">
+                            <input type="file" id="id_cover_image" name="cover_image" accept="image/*"
+                                   onchange="updateFileName(this)">
+                            <i class="material-icons file-upload-icon">cloud_upload</i>
+                            <div class="file-upload-text" id="file-name-text">Click or drag to upload cover image</div>
+                        </div>
+                        {% if form.cover_image.errors %}
+                            <div class="form-error">
+                                <i class="material-icons" style="font-size: 1rem;">error</i>
+                                {{ form.cover_image.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-row">
+                        <label for="id_description" class="form-label">Description</label>
+                        <textarea id="id_description" name="description" rows="5"
+                                  class="form-control {% if form.description.errors %}error{% endif %}">{{ form.description.value|default:'' }}</textarea>
+                        {% if form.description.errors %}
+                            <div class="form-error">
+                                <i class="material-icons" style="font-size: 1rem;">error</i>
+                                {{ form.description.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="material-icons" style="margin-right: 0.5rem;">save</i>
+                            Register Book
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'forms/js/add-book-form.js' %}"></script>
+{% endblock %}
+

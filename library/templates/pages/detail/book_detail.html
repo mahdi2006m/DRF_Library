@@ -1,0 +1,166 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Book Detail - {{ book.title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'pages/detail/css/book_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <main class="main-content">
+            <a href="javascript:history.back()" class="btn btn-secondary"
+               style="margin-bottom: 1.5rem; align-self: flex-start;">
+                <i class="material-icons" style="margin-right: 0.5rem;">arrow_back</i>
+                Back
+            </a>
+
+            <div class="book-detail">
+                <div class="book-cover-section">
+                    <div class="book-cover-image">
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                        {% else %}
+                            <div class="no-cover">No Cover Available</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="book-availability">
+                        {% if book.available_copies > 0 and book.status != 'lost' %}
+                            <div class="availability-status available">
+                                <i class="material-icons">check_circle</i>
+                                <span>Available</span>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary">
+                                    <i class="material-icons" style="margin-right: 0.5rem;">bookmark</i>
+                                    Borrowing
+                                </a>
+                            </div>
+
+                        {% elif book.status == 'lost' %}
+                            <div class="availability-status unavailable">
+                                <i class="material-icons">cancel</i>
+                                <span>Non-existent</span>
+                            </div>
+                        {% else %}
+                            <div class="availability-status unavailable">
+                                <i class="material-icons">cancel</i>
+                                <span>Non-existent</span>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="{% url 'reserve_book' book.id %}" class="btn btn-primary">
+                                    <i class="material-icons" style="margin-right: 0.5rem;">event_available</i>
+                                    Reserve
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="book-info">
+                    <div class="book-header">
+                        <h1 class="book-title">{{ book.title }}</h1>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Authors:</span>
+                            {% for author in book.author.all %}
+                                <a href="{% url 'author_detail' author.id %}" class="meta-link">{{ author }}</a>
+                                {% if not forloop.last %}<span>, </span>{% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Publisher:</span>{% if book.publisher %}
+                            <a href="{% url 'publisher_detail' book.publisher.id %}" class="meta-link">
+                                {{ book.publisher }}
+                            </a>
+                        {% else %}
+                            No publisher
+                        {% endif %}
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Category:</span>{% if book.category %}
+                            <a href="{% url 'category_detail' book.category.slug %}"
+                               class="meta-link">{{ book.category }}</a>
+                        {% else %}No category
+                        {% endif %}
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">ISBN:</span>
+                            <span class="meta-value">{{ book.isbn }}</span>
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Publication Year:</span>
+                            {% if book.publication_year %}
+                                <span class="meta-value">{{ book.publication_year }}</span>
+                            {% else %}No publication Year
+                            {% endif %}
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Total Copies:</span>
+                            <span class="meta-value">{{ book.total_copies }}</span>
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Pages:</span>
+                            <span class="meta-value">{{ book.pages }}</span>
+                        </div>
+
+                        <div class="book-meta">
+                            <span class="meta-label">Available Copies:</span>
+                            <span class="meta-value">{{ book.available_copies }}</span>
+                        </div>
+
+                        {% if book.tags.all %}
+                            <div class="book-tags">
+                                {% for tag in book.tags.all %}
+                                    <span class="tag">#{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="book-description">
+                        <h3 class="description-title">Description</h3>{% if book.description %}
+                        <div class="description-content">{{ book.description }}</div>
+                    {% else %}No description
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if similar_books %}
+                <div class="similar-books-section">
+                    <h2 class="section-title">Similar Books</h2>
+                    <div class="similar-books-grid">
+                        {% for similar_book in similar_books %}
+                            <div class="similar-book-card">
+                                <div class="similar-book-cover">
+                                    <a href="{% url 'book_detail' similar_book.id %}">
+                                        {% if similar_book.cover_image %}
+                                            <img src="{{ similar_book.cover_image.url }}"
+                                                 alt="{{ similar_book.title }}">
+                                        {% else %}
+                                            <div class="no-cover">No Cover</div>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <a href="{% url 'book_detail' similar_book.id %}"
+                                   class="similar-book-title">{{ similar_book.title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="pages/detail/js/book_detail.js"></script>
+{% endblock %}
+

@@ -1,0 +1,321 @@
+/* Publisher List Page CSS */
+@import url('../../../bases/css/variables.css');
+
+/* --- Publishers Grid --- */
+.publishers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.publisher-card {
+    background-color: var(--surface-color);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+}
+
+.publisher-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.publisher-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: var(--surface-color-light);
+    gap: 1.25rem;
+}
+
+.publisher-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.publisher-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition);
+}
+
+.publisher-logo:hover img {
+    transform: scale(1.05);
+}
+
+.publisher-logo i.material-icons {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+
+.publisher-logo-placeholder {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.publisher-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.publisher-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    transition: color 0.2s;
+}
+
+.publisher-card:hover .publisher-name {
+    color: var(--accent-color);
+}
+
+.publisher-website {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    word-break: break-all;
+}
+
+.publisher-website:hover {
+    gap: 0.5rem;
+}
+
+.publisher-details {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.publisher-address {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.publisher-address i {
+    color: var(--accent-color);
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+}
+
+.publisher-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.stat-item i {
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.publisher-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    margin-top: auto;
+}
+
+.publisher-link i {
+    font-size: 1rem;
+    margin-left: 0.5rem;
+    transition: margin-left 0.2s;
+}
+
+.publisher-link:hover i {
+    margin-left: 0.75rem;
+}
+
+.publisher-books-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.publisher-books-count i {
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.publisher-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    color: var(--accent-color);
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+@media (max-width: 1200px) {
+    .publishers-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.75rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .publishers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .publisher-header {
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+    
+    .publisher-logo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .publisher-name {
+        font-size: 1.125rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .publishers-grid {
+        gap: 1.25rem;
+    }
+    
+    .publisher-header {
+        padding: 1rem;
+    }
+    
+    .publisher-details {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .publishers-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .publisher-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.25rem;
+    }
+
+    .publisher-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .publisher-details {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .publisher-header {
+        padding: 1rem;
+    }
+    
+    .publisher-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .publisher-name {
+        font-size: 1rem;
+    }
+    
+    .publisher-details {
+        padding: 0.875rem;
+    }
+    
+    .publisher-link {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .publisher-header {
+        padding: 0.875rem;
+    }
+    
+    .publisher-logo {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .publisher-details {
+        padding: 0.75rem;
+    }
+}

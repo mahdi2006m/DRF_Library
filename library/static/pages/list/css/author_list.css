@@ -1,0 +1,148 @@
+/* Author List Page CSS */
+@import url('../../../bases/css/variables.css');
+
+.section-header a {
+    margin-bottom: 0;
+}
+
+/* --- Authors Grid --- */
+.authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.author-card {
+    background-color: var(--surface-color);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+}
+
+.author-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.author-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: var(--surface-color-light);
+}
+
+.author-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 1.25rem;
+    flex-shrink: 0;
+    background-color: var(--surface-color);
+    border: 3px solid var(--surface-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface-color);
+    color: var(--text-secondary);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.author-name {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.author-name a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    transition: color 0.2s;
+}
+
+.author-name a:hover {
+    color: var(--accent-color);
+}
+
+.author-books-count {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.author-books-count i {
+    font-size: 1rem;
+    margin-right: 0.25rem;
+    color: var(--accent-color);
+}
+
+.author-details {
+    padding: 1.5rem;
+}
+
+.author-bio {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.author-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.author-link i {
+    font-size: 1rem;
+    margin-right: 0.25rem;
+    transition: margin-right 0.2s;
+}
+
+.author-link:hover i {
+    margin-right: 0.5rem;
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 900px) {
+    .authors-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .authors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+}

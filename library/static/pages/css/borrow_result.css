@@ -1,0 +1,97 @@
+/* Borrow Result Page CSS */
+@import url('../../bases/css/variables.css');
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-content {
+    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-card {
+    background-color: var(--surface-color);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-md);
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.result-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 3rem;
+}
+
+.result-icon.success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+}
+
+.result-icon.error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+}
+
+.result-icon.info {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: var(--accent-color);
+}
+
+.result-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.result-message {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .result-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .result-title {
+        font-size: 1.75rem;
+    }
+
+    .result-message {
+        font-size: 1rem;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+}

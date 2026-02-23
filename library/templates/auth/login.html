@@ -1,0 +1,104 @@
+{% extends "bases/master.html" %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auth/css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <main class="main-content">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1 class="login-title">Welcome Back</h1>
+                    <p class="login-subtitle">Enter your credentials to access your library account</p>
+                </div>
+
+                <!-- Error Messages -->
+                {#            {% if form.errors %}#}
+                {#            <div class="form-error-message" style="color: var(--error-color); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem;">#}
+                {#                <div style="display: flex; align-items: center; gap: 0.5rem;">#}
+                {#                    <i class="material-icons">error_outline</i>#}
+                {#                    <span>Please correct the errors below:</span>#}
+                {#                </div>#}
+                {#            </div>#}
+                {#            {% endif %}#}
+
+                {% if form.non_field_errors %}
+                    <div class="form-error-message"
+                         style="color: var(--error-color); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="material-icons">error_outline</i>
+                            <span>{{ form.non_field_errors }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Login Form -->
+                <form method="post" action="{% url 'login' %}" class="login-form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}"
+                               class="form-label">{{ form.username.label }}</label>
+                        <input type="{{ form.username.field.widget.input_type }}" name="{{ form.username.name }}"
+                               id="{{ form.username.id_for_label }}"
+                               class="form-control {% if form.username.errors %}error{% endif %}" required>
+                        {% if form.username.errors %}
+                            <div class="form-error-message">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}"
+                               class="form-label">{{ form.password.label }}</label>
+                        <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}"
+                               class="form-control {% if form.password.errors %}error{% endif %}" required>
+                        {% if form.password.errors %}
+                            <div class="form-error-message">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Remember Me Checkbox -->
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember_me" id="remember_me"
+                                   {% if form.remember_me.value %}checked{% endif %}>
+                            <span>Remember me</span>
+                        </label>
+                    </div>
+
+                    <!-- Additional Links -->
+                    <div class="auth-links">
+                        <div class="forgot-password">
+                            <a href="{% url 'password_reset' %}" class="nav-link">
+                                <i class="material-icons">lock_reset</i>
+                                Forgot Password?
+                            </a>
+                        </div>
+                        <div class="register-link">
+                            <a href="{% url 'register' %}" class="nav-link">
+                                <i class="material-icons">person_add</i>
+                                Create Account
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="javascript:history.back()" class="btn btn-outline btn-secondary">
+                            <i class="material-icons">arrow_back</i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary login-button">
+                            Log In
+                        </button>
+                    </div>
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                </form>
+
+            </div>
+        </main>
+    </div>
+
+
+{% endblock %}

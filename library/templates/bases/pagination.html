@@ -1,0 +1,44 @@
+<!-- Pagination HTML -->
+<div class="pagination">
+    {% if page.has_previous %}
+    <a href="?page=1"
+       class="pagination-btn" title="First page">
+        <i class="material-icons">first_page</i>
+    </a>
+
+    <a href="?page={{ page.previous_page_number }}"
+       class="pagination-btn">
+        <i class="material-icons">chevron_left</i>
+    </a>
+    {% else %}
+    <button class="pagination-btn" disabled>
+        <i class="material-icons">first_page</i>
+    </button>
+    <button class="pagination-btn" disabled>
+        <i class="material-icons">chevron_left</i>
+    </button>
+    {% endif %}
+
+    <span class="page-btn page-current">{{ page.number }}</span>
+
+
+    {% if page.has_next %}
+    <a href="?page={{ page.next_page_number }}"
+       class="pagination-btn">
+        <i class="material-icons">chevron_right</i>
+    </a>
+
+    <a href="?page={{ page.paginator.num_pages }}"
+       class="pagination-btn" title="Last page">
+        <i class="material-icons">last_page</i>
+    </a>
+    {% else %}
+    <button class="pagination-btn" disabled>
+        <i class="material-icons">chevron_right</i>
+
+    </button>
+    <button class="pagination-btn" disabled>
+        <i class="material-icons">last_page</i>
+    </button>
+    {% endif %}
+</div>
