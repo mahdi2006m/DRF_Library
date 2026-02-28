@@ -4,7 +4,6 @@
 
 [![Django](https://img.shields.io/badge/Django-4.2+-green?style=for-the-badge&logo=django)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 A comprehensive **library management system** built with **Django** and **Django REST Framework (DRF)**.
 
@@ -90,7 +89,6 @@ Your application will be available at `http://127.0.0.1:8000/`
 | `GET /api/publishers/{id}/` | Retrieve specific publisher |
 | `GET /api/borrows_history/` | View deposit history |
 | `GET /api/reserv_history/` | View reservation history |
-| `GET /admin/` | Django admin interface |
 
 ## 📁 Project Structure
 
