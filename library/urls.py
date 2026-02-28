@@ -18,8 +18,8 @@ router.register(r"reserv_history", views.APIReserveHistoryViewSet, basename="res
 
 
 urlpatterns = [
-    path('lib-api/', include(router.urls)),
-    path('lib-api/', include("rest_framework.urls", namespace='rest_framework')),
+    path('api/', include(router.urls)),
+    path('api/', include("rest_framework.urls", namespace='rest_framework')),
     path('test/', views.test_list, name='test_list'),
     path('', views.home, name='home'),
     path('filter/<slug:tag_slug>/', views.home, name='filter_tag'),
