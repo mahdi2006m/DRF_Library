@@ -30,7 +30,7 @@ This project implements a modern library management system with features for man
 - **Python 3.x** - Programming language
 - **Django** - Web framework
 - **Django REST Framework** - API toolkit
-- **SQLite** - Default database (easily swappable)
+- **PostgreSQL** - Useful database
 - **HTML/CSS/JS** - Frontend components
 
 ## 🚀 Installation
@@ -75,12 +75,21 @@ Your application will be available at `http://127.0.0.1:8000/`
 
 | Endpoint | Description |
 |----------|-------------|
+| `GET /api/` | Api root |
 | `GET /api/books/` | Retrieve all books |
 | `POST /api/books/` | Create a new book |
 | `GET /api/books/{id}/` | Retrieve specific book |
 | `PUT /api/books/{id}/` | Update specific book |
 | `DELETE /api/books/{id}/` | Delete specific book |
+| `GET /api/books/{id}/borrows` | Borrowing or reserving specific book |
 | `GET /api/authors/` | Manage authors |
+| `GET /api/authors/{id}/` | Retrieve specific authors |
+| `GET /api/categories/` | Manage categories |
+| `GET /api/categories/{id}/` | Retrieve specific category |
+| `GET /api/publishers/` | Manage publishers |
+| `GET /api/publishers/{id}/` | Retrieve specific publisher |
+| `GET /api/borrows_history/` | View deposit history |
+| `GET /api/reserv_history/` | View reservation history |
 | `GET /admin/` | Django admin interface |
 
 ## 📁 Project Structure
