@@ -122,7 +122,7 @@ class MemberAdmin(admin.ModelAdmin):
     fieldsets = [
         ('User Information', {
             'fields': [
-                'get_fullname','get_username','get_email',
+                'user', 'get_fullname','get_username','get_email',
             ],
         }),
         ('Member Information', {
