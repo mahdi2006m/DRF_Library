@@ -1,21 +1,24 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.template.defaultfilters import title
+
 from .forms import *
 from .models import *
-from django.utils import timezone
-from datetime import timedelta
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from taggit.models import Tag
-from django.db.models import Count, Q
+from django.core.paginator import Paginator
+from django.db.models import Count
 from django.db.models.functions import Greatest
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.auth import login, views as auth_views
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from django.contrib.auth import views as auth_views
-from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib import messages
+
+from taggit.models import Tag
+
+from datetime import timedelta
 
 
 # from django.core.mail import send_mail
@@ -83,6 +86,7 @@ class CategoryDetail(DetailView):
     context_object_name = 'category'
     template_name = 'pages/detail/Category_detail.html'
 
+
 @login_required(login_url='login_required')
 @permission_required('library.add_book', login_url='403')
 def add_book(request):
@@ -122,6 +126,7 @@ def add_book(request):
                }
     return render(request, 'forms/add-book-form.html', content)
 
+
 @login_required(login_url='login_required')
 def borrow_book(request, book_id):
     member = request.user.member_profile
@@ -130,19 +135,25 @@ def borrow_book(request, book_id):
         return redirect('book_detail', book_id)
     due_date = timezone.now().date() + timedelta(days=21)
 
+    if Borrow.objects.filter(member=member, book=book, status='borrowed').exists():
+        return redirect('book_detail', book_id)
+
+    if book.available_copies <= 0:
+        return redirect('book_detail', book_id)
+
     try:
         Borrow.objects.create(member=member, book=book, due_date=due_date)
-        messages = "The book successfully borrowed"
+        message = "The book successfully borrowed"
     except ValueError as e:
-        messages = str(e)
+        message = str(e)
 
-    return render(request, 'pages/borrow_result.html', {'messages': messages})
+    return render(request, 'pages/borrow_result.html', {'messages': message})
 
 
 @login_required(login_url='login_required')
 def reserve_book(request, book_id):
     member = request.user.member_profile
-    book= get_object_or_404(Book,id=book_id)
+    book = get_object_or_404(Book, id=book_id)
     if book.status == 'lost' or book.available_copies >= 1:
         return redirect('book_detail', book_id)
 
@@ -155,7 +166,6 @@ def reserve_book(request, book_id):
         messages = str(e)
 
     return render(request, 'pages/borrow_result.html', {'messages': messages})
-
 
 
 @login_required(login_url='login_required')
@@ -182,8 +192,8 @@ def contact(request):
                 subject = form['subject']
                 message = form['message']
                 email = form['email']
-                from_email = settings.DEFAULT_FROM_EMAIL
-                recipient_list = settings.DEFAULT_FROM_EMAIL
+                # from_email = settings.DEFAULT_FROM_EMAIL
+                # recipient_list = settings.DEFAULT_FROM_EMAIL
                 msg = f"\n\n=-----------------------------=\n\nmember name: {name}\nemail: {email}\nsubject: {subject}\nmessage: \n'{message}'\n{timezone.now()}\n"
 
                 try:
@@ -259,6 +269,7 @@ def search(request, tag_slug=None):
 
         return render(request, 'pages/home.html', {'page': page_obj, 'tag': tag})
 
+
 @login_required(login_url='login_required')
 def member_profile(request):
     member = Member.objects.get(user=request.user)
@@ -279,15 +290,15 @@ class CustomLoginView(UserPassesTestMixin, auth_views.LoginView):
         return super().form_valid(form)
 
     def test_func(self):
-        return not  self.request.user.is_authenticated
+        return not self.request.user.is_authenticated
 
     def handle_no_permission(self):
         return redirect('logout_required')
 
 
-
 def logout_required(user):
     return not user.is_authenticated
+
 
 @user_passes_test(logout_required, login_url='logout_required')
 def member_register(request):
@@ -307,6 +318,7 @@ def member_register(request):
 
     return render(request, 'auth/register.html', {'form': form})
 
+
 @login_required(login_url='login_required')
 class CustomChangePasswordView(auth_views.PasswordChangeView):
     form_class = CustomChangePasswordForm
@@ -323,10 +335,11 @@ class CustomResetPasswordView(UserPassesTestMixin, auth_views.PasswordResetView)
     template_name = 'auth/reset_password/password_reset.html'
     form_class = CustomPasswordResetForm
     email_template_name = 'auth/reset_password/password_reset_email.html'
+
     # success_url = reverse_lazy('password_reset_confirm')
 
     def test_func(self):
-        return not  self.request.user.is_authenticated
+        return not self.request.user.is_authenticated
 
     def handle_no_permission(self):
         return redirect('logout_required')
@@ -336,7 +349,7 @@ class CustomPasswordResetDoneView(UserPassesTestMixin, auth_views.PasswordResetD
     template_name = 'auth/reset_password/password_reset_done.html'
 
     def test_func(self):
-        return not  self.request.user.is_authenticated
+        return not self.request.user.is_authenticated
 
     def handle_no_permission(self):
         return redirect('logout_required')
@@ -348,38 +361,126 @@ class CustomPasswordResetConfirmView(UserPassesTestMixin, auth_views.PasswordRes
     success_url = reverse_lazy('login')
 
     def test_func(self):
-        return not  self.request.user.is_authenticated
+        return not self.request.user.is_authenticated
 
     def handle_no_permission(self):
         return redirect('logout_required')
 
 
+# ------------------------#  views for DRF  #------------------------#
 
-# views for DRF
+
 from .serializers import *
-from rest_framework import viewsets , permissions
+from .permissions import *
 
-class AutorViewSet(viewsets.ModelViewSet):
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action, permission_classes
+from rest_framework.response import Response
+
+
+class APIAutorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAdminOrRead]
 
 
-class PublisherViewSet(viewsets.ModelViewSet):
-    queryset = Publisher
+class APIPublisherViewSet(viewsets.ModelViewSet):
+    queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAdminOrRead]
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+class APICategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAdminOrRead]
 
 
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+class APIBookViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Book.objects.all().select_related("publisher", "category").prefetch_related("author", "tags")
+    serializer_class = BookSerializer
 
+    @action(detail=True)
+    @permission_classes([permissions.IsAuthenticated])
+    def borrow(self, request, pk=None):
+        book = self.get_object()
+        member = request.user.member_profile
+
+        if book.status == "lost":
+            return Response({
+                'status': "fail",
+                'message': "This book is unavailable."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        if book.available_copies >= 1:
+            due_date = timezone.now().date() + timedelta(days=21)
+
+            if Borrow.objects.filter(member=member, book=book, status='borrowed').exists():
+                return Response({
+                    'status': "fail",
+                    "message": "You're already borrowed this book."
+                })
+
+            active_borrows = Borrow.objects.filter(member=member, status="borrowed").count()
+            if active_borrows >= member.max_books_allowed():
+                return Response({
+                    "status": "fail",
+                    "message": f"You can not borrow more than {member.max_books_allowed()} book."
+                }, status=status.HTTP_426_UPGRADE_REQUIRED)
+
+            try:
+                Borrow.objects.create(member=member, book=book, due_date=due_date)
+                message = f"The {book.title} book successfully borrowed."
+                return Response({
+                    "status": "success",
+                    "message": message
+                }, status=status.HTTP_200_OK)
+            except ValueError as e:
+                message = str(e)
+                return Response({
+                    "status": "fail",
+                    "message": message
+                })
+        else:
+            if Reservation.objects.filter(member=member, book=book, status='active').exists():
+                return Response({
+                    'status': "fail",
+                    "message": "You're already reserved this book."
+                })
+
+            active_borrows = Reservation.objects.filter(member=member, status="active").count()
+            if active_borrows >= member.max_books_allowed():
+                return Response({
+                    "status": "fail",
+                    "message": f"You can not reserve more than {member.max_books_allowed()} book."
+                }, status=status.HTTP_426_UPGRADE_REQUIRED)
+
+            try:
+                Reservation.objects.create(member=member, book=book)
+                message = f"The {book.title} book is unavailable.\nYou successfully reserve it."
+                return Response({
+                    "status": "success",
+                    "message": message
+                }, status=status.HTTP_200_OK)
+            except ValueError as e:
+                message = str(e)
+                return Response({
+                    "status": "fail",
+                    "message": message
+                })
+
+
+class APIBorrowHistoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BorrowListSerializer
+
+    def get_queryset(self):
+        return Borrow.objects.filter(member=self.request.user.member_profile)
+
+
+class APIReserveHistoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = BorrowListSerializer
+
+    def get_queryset(self):
+        return Borrow.objects.filter(member=self.request.user.member_profile)
 
 

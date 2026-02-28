@@ -2,15 +2,19 @@ from django.urls import path , include
 from . import views
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
+
+
 from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-# router.register(r"author", views.AutorViewSet)
-# router.register(r"publisher", views.PublisherViewSet)
+router.register(r"authors", views.APIAutorViewSet)
+router.register(r"categories", views.APICategoryViewSet)
+router.register(r"publishers", views.APIPublisherViewSet)
+router.register(r"books", views.APIBookViewSet)
+router.register(r"borrows_history", views.APIBorrowHistoryViewSet, basename="borrow")
+router.register(r"reserv_history", views.APIReserveHistoryViewSet, basename="reserve")
 
-router.register(r"user", views.UserViewSet)
-router.register(r"group", views.GroupViewSet)
 
 
 urlpatterns = [
