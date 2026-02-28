@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
-import os.path
 from pathlib import Path
-# import dj_database_url
+import dj_database_url
 from django.conf import STATICFILES_STORAGE_ALIAS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gsdl6usu-jt1rvb%(qx-nr48g(p*n%-5x*+4n2i#_00oj=(w$p'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,11 +43,9 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',
     'taggit',
     'django.contrib.postgres',
-    # 'cloudinary',
-    # 'cloudinary_storage',
+    'cloudinary',
+    'cloudinary_storage',
     'rest_framework.apps.RestFrameworkConfig',
-    'DRF_tutorial.apps.DrfTutorialConfig' # DRF tutorial
-
 ]
 
 MIDDLEWARE = [
@@ -67,7 +64,7 @@ ROOT_URLCONF = 'Library_with_DRF.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'library/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -85,32 +82,14 @@ WSGI_APPLICATION = 'Library_with_DRF.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
-    'default': {
-        # "HOST": "127.0.0.1" ,
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "LIBRARYDB",
-        'USER': "postgres",
-        'PASSWORD': "Mahdi2006",
-        "PORT": "5432",
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=True
+    )
 }
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL'),
-#         conn_max_age=600,
-#         conn_health_checks=True,
-#         ssl_require=True  # <== این خط برای دیتابیس Render حیاتی است!
-#     )
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -151,35 +130,31 @@ STATICFILES_DIRS=[
     BASE_DIR / 'library/static',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
-#
-# # settings Cloudinary
-# cloudinary.config(
-#     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-#     api_key=os.environ.get('CLOUDINARY_API_KEY'),
-#     api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
-#     secure=True
-# )
-#
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-#     },
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
-# setting media in Django
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-# MEDIA_URL = '/media/'
+# settings Cloudinary
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 
 
@@ -189,7 +164,6 @@ EMAIL_PAGE_WIDTH = 1000
 
 # Password reset settings
 PASSWORD_RESET_TIMEOUT = 3600
-PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -197,11 +171,11 @@ LOGOUT_REDIRECT_URL= '/'
 LOGIN_REDIRECT_URL = '/'
 
 
-# SECURE_SSL_REDIRECT = True
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_HSTS_SECONDS = 31536000
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 31536000
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 REST_FRAMEWORK = {
