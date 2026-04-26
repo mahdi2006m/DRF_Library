@@ -326,11 +326,6 @@ class CustomChangePasswordView(auth_views.PasswordChangeView):
     template_name = 'auth/change_password.html'
 
 
-def test_list(request):
-    books = Book.objects.all()
-    return render(request, 'pages/tester.html', {"books": books})
-
-
 class CustomResetPasswordView(UserPassesTestMixin, auth_views.PasswordResetView):
     template_name = 'auth/reset_password/password_reset.html'
     form_class = CustomPasswordResetForm
